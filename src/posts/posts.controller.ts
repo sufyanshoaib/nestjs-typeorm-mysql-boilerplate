@@ -1,22 +1,49 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
+import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { OfferPost } from './entities/post.entity';
 import { PostsService } from './posts.service';
 
+@ApiTags("Posts")
 @Controller('posts')
 export class PostsController {
     constructor(private postsService: PostsService) {};
 
+    @ApiOkResponse({type: OfferPost, isArray: true})
+    @ApiNotFoundResponse()
     @Get()
     getPosts(): OfferPost[]  {
-        return this.postsService.getAllPosts();
+        const posts = this.postsService.getAllPosts();
+        if (posts.length == 0) {
+            throw new NotFoundException();
+        }
+        return posts;
     }
 
+    @ApiOkResponse({type: OfferPost, isArray: true})
+    @ApiQuery({name:"tag", required: true})
+    @ApiNotFoundResponse()
+    @Get("search")
+    getPostsByTag(@Query('tag') tag: string): OfferPost[] {
+        const posts = this.postsService.getPostsByTag(tag);
+        if (posts.length == 0) {
+            throw new NotFoundException();
+        }
+        return posts;
+    }
+
+    @ApiOkResponse({type: OfferPost})
+    @ApiNotFoundResponse()
     @Get(":id")
     getPostById(@Param('id') id: Number): OfferPost {
-        return this.postsService.getPostsById(Number(id));
+        const post = this.postsService.getPostsById(Number(id));
+        if (!post) {
+            throw new NotFoundException();
+        }
+        return post;
     }
 
+    @ApiCreatedResponse({type: OfferPost})
     @Post()
     createPost(@Body() postDto: CreatePostDto): OfferPost {
         return this.postsService.createPost(postDto);
