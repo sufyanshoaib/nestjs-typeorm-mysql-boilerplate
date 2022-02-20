@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
 import { OfferPost } from './entities/post.entity';
@@ -35,8 +35,8 @@ export class PostsController {
     @ApiOkResponse({type: OfferPost})
     @ApiNotFoundResponse()
     @Get(":id")
-    getPostById(@Param('id') id: Number): OfferPost {
-        const post = this.postsService.getPostsById(Number(id));
+    getPostById(@Param('id', ParseIntPipe) id: number): OfferPost {
+        const post = this.postsService.getPostsById(id);
         if (!post) {
             throw new NotFoundException();
         }
