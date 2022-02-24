@@ -10,8 +10,16 @@ const config: MysqlConnectionOptions = {
     "synchronize": true,
     "logging": true,
     "entities": [
-     "dist/src/**/**/*.entity.js"
-    ]
+        "dist/src/**/**/*.entity.js"
+    ],
+    "migrations": [
+        'dist/src/db/migrations/*.js' //Tell Typeorm where the migration scripts are
+    ],
+    "cli" : {
+        migrationsDir : 'src/db/migrations'
+    }
+
+
 }
 
 export default config;
