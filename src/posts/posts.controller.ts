@@ -5,7 +5,7 @@ import { OfferPost } from './entities/post.entity';
 import { PostsService } from './posts.service';
 
 @ApiTags("Posts")
-@Controller('posts')
+@Controller({ path:'posts', version: '1'})
 export class PostsController {
     constructor(private postsService: PostsService) {};
 

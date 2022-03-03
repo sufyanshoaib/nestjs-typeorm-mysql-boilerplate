@@ -3,9 +3,11 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/auth/roles.decorator';
+import { ROLE } from 'src/auth/role.enum';
 
 @ApiTags("Users")
-@Controller('users')
+@Controller({ path:'users', version: '1'})
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -35,6 +37,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Roles(ROLE.ADMIN)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

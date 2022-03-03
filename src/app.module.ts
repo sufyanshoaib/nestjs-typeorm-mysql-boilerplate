@@ -6,9 +6,13 @@ import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import config from 'ormconfig';
+import { RolesGuard } from './auth/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [PostsModule, TypeOrmModule.forRoot(config), UsersModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, 
+    { provide: APP_GUARD, useClass: RolesGuard } //Register this Guard to globally on entire application
+  ],
 })
 export class AppModule {}
