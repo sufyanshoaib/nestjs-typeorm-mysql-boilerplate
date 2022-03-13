@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule} from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +11,7 @@ import { RolesGuard } from './auth/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     PostsModule, 
     TypeOrmModule.forRoot(config), 
     UsersModule, 
