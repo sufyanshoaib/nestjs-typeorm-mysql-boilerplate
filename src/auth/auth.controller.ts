@@ -1,5 +1,6 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { FacebookAuthGuard } from './facebook-auth.guard';
 import { JwtAuthGaurd } from './jwt-auth.guard';
 import { LocalAuthGuard } from './local-auth.guard';
 
@@ -16,6 +17,18 @@ export class AuthController {
   @UseGuards(JwtAuthGaurd)
   @Post('user')
   getTokenInfo(@Request() req): any {
+    return req.user
+  }
+
+  @UseGuards(FacebookAuthGuard)
+  @Get('facebook/login')
+  facebookLogin(@Request() req) :any {
+    return req.user
+  }
+
+  @UseGuards(FacebookAuthGuard)
+  @Get('facebook/callback')
+  facebookLoginCallback(@Request() req) :any {
     return req.user
   }
 

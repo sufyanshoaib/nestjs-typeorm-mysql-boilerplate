@@ -9,7 +9,12 @@ import config from 'ormconfig';
 import { RolesGuard } from './auth/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 @Module({
-  imports: [PostsModule, TypeOrmModule.forRoot(config), UsersModule, AuthModule],
+  imports: [
+    PostsModule, 
+    TypeOrmModule.forRoot(config), 
+    UsersModule, 
+    AuthModule
+  ],
   controllers: [AppController],
   providers: [AppService, 
     { provide: APP_GUARD, useClass: RolesGuard } //Register this Guard to globally on entire application
